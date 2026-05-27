@@ -1,0 +1,19 @@
+/* src/index.css */
+@import "tailwindcss";
+
+/* Вмикаємо ручне керування темою через клас .dark на <html> */
+@custom-variant dark (&:is(.dark *));
+
+html {
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

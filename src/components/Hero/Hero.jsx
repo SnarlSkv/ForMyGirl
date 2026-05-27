@@ -98,7 +98,7 @@ export default function Hero({ onOpen }) {
           custom={0.9}
           className="mt-8 text-sm text-rose-400 dark:text-rose-500 animate-pulse"
         >
-          Не забудь увімкнути музику 💕 але обережно по гучності 🙈
+          Сподіваюсь зможу трішки підняти тобі настрій сьогодні навіть на відстані ❤️
         </motion.p>
       </div>
     </section>

@@ -5,12 +5,10 @@ import { FaHeart, FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa'
 
 // Секції сайту — id має співпадати з id секцій у App.jsx
 const NAV_ITEMS = [
-  { id: 'hero',    label: '🏠 Головна' },
+  { id: 'hero',    label: '🏠 Початок' },
   { id: 'timeline', label: '📖 Спогади' },
-  { id: 'message', label: '💌 Послання' },
-  { id: 'gallery', label: '📸 Галерея' },
-  // { id: 'memes',   label: '😄 Меми' },
-  // { id: 'games',   label: '🎮 Ігри' },
+  { id: 'message', label: '💌 Міні послання' },
+  { id: 'gallery', label: '📸 Приколюхи' },
   { id: 'finale',  label: '🎉 Фінал' },
 ]
 

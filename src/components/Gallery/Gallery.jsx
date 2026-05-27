@@ -15,6 +15,10 @@ import photo4 from '../../assets/photos/12.jpg'
 import photo5 from '../../assets/photos/3.jpg'
 import photo6 from '../../assets/photos/13.jpg'
 import photo7 from '../../assets/photos/5.jpg'
+import photo8 from '../../assets/photos/24.jpg'
+import photo9 from '../../assets/photos/7.jpg'
+import photo10 from '../../assets/photos/26.jpg'
+import photo11 from '../../assets/photos/27.jpg'
 
 const PHOTOS = [
   { id: 1, url: photo1, color: 'from-rose-300 to-pink-400',    caption: 'Хочу постійно отримувати такий подаруночок на Новий Рік 😄❤️',   span: 'col-span-2 row-span-2' },
@@ -25,7 +29,12 @@ const PHOTOS = [
   { id: 6, url: photo5, color: 'from-rose-400 to-fuchsia-400', caption: 'КЧААУУУ',   span: 'col-span-2' },
   { id: 7, url: photo6, color: 'from-sky-300 to-violet-400',   caption: 'Сарделька',        span: '' },
   { id: 8, url: photo7, color: 'from-emerald-300 to-rose-300', caption: 'Дві сардельки',       span: '' },
-  { id: 9, url: photo2, color: 'from-emerald-300 to-rose-300', caption: 'Ну все, тепер пішли до основного привітання',       span: '' },
+  { id: 10, url: photo8, color: 'from-emerald-300 to-rose-300', caption: 'Це так між іншим, просто случив за тобою )',       span: '' },
+  { id: 11, url: photo9, color: 'from-emerald-300 to-rose-300', caption: '',       span: '' },
+  { id: 12, url: photo10, color: 'from-emerald-300 to-rose-300', caption: 'Я не сплю.......',       span: '' },
+  { id: 13, url: photo11, color: 'from-emerald-300 to-rose-300', caption: 'крута фотка',       span: '' },
+  { id: 14, url: photo2, color: 'from-emerald-300 to-rose-300', caption: 'Ну все, тепер пішли до основного привітання',       span: '' },
+  
   ]
 
 // ─── LIGHTBOX ────────────────────────────────────────────────────────────────

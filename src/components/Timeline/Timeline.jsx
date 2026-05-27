@@ -155,7 +155,7 @@ const fadeUp = {
 function MemoryCard({ memory, index }) {
   const ref = useRef(null)
   // Запускаємо анімацію коли картка входить у viewport
-  const isInView = useInView(ref, { once: true, margin: '-80px' })
+  const isInView = useInView(ref, { once: true, margin: '-60px' })
   const isLeft = index % 2 === 0 // чергуємо: парні зліва, непарні справа
 
   const Icon = memory.icon
@@ -273,7 +273,13 @@ export default function Timeline() {
       <div className="max-w-3xl mx-auto relative">
 
         {/* Вертикальна лінія посередині */}
-        <div className="absolute left-[46px] md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-rose-200 via-fuchsia-300 to-rose-200 dark:from-rose-700 dark:via-fuchsia-700 dark:to-rose-700 -translate-x-1/2" />
+        <div className="
+          absolute top-0 bottom-0 w-0.5
+          right-1 md:left-1/2
+          -translate-x-1/2
+          bg-gradient-to-b from-rose-200 via-fuchsia-300 to-rose-200
+          dark:from-rose-700 dark:via-fuchsia-700 dark:to-rose-700
+        " />
 
         {/* Картки */}
         <div className="flex flex-col gap-10 md:gap-14">

@@ -3,8 +3,7 @@ import { useAudio } from '../../contexts/AudioContext'
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ReactConfetti from 'react-confetti'
-import { FaHeart, FaRedo, FaPlay, FaPause, FaStar } from 'react-icons/fa'
-
+import { FaHeart, FaRedo, FaPlay, FaPause, FaStar, FaTimes } from 'react-icons/fa'
 // ─── ФІНАЛЬНИЙ ТЕКСТ ──────────────────────────────────────────────────────────
 // Зміни на свій
 const FINAL_WORDS = [
@@ -21,190 +20,173 @@ const FINAL_WORDS = [
 // Поклади відео у public/video/greeting.mp4
 // Або встав посилання на YouTube/Google Drive
 function VideoGreeting() {
-  const videoRef    = useRef(null)
-  const wrapperRef  = useRef(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [hasVideo,  setHasVideo]  = useState(true)
-  const [isFullscreen, setIsFullscreen] = useState(false)
-
-  // Беремо керування музикою з контексту
+  const DRIVE_FILE_ID = '19A1JORhSDsMZl3i_aAMv08HbFldoBGyr'
+  const [isOpen, setIsOpen] = useState(false)
   const { isPlaying: musicPlaying, pause: pauseMusic, play: resumeMusic } = useAudio()
-  // Запам'ятовуємо чи грала музика ДО запуску відео
   const musicWasPlaying = useRef(false)
 
-  // Слухаємо події повноекранного режиму
-  useEffect(() => {
-    const onFsChange = () => {
-      const inFs = !!(
-        document.fullscreenElement       ||
-        document.webkitFullscreenElement ||
-        document.mozFullScreenElement
-      )
-      setIsFullscreen(inFs)
-
-      // Якщо вийшли з повноекранного — ставимо відео на паузу
-      if (!inFs && videoRef.current) {
-        videoRef.current.pause()
-        setIsPlaying(false)
-        // Відновлюємо музику якщо вона грала до цього
-        if (musicWasPlaying.current) resumeMusic()
-      }
-    }
-
-    document.addEventListener('fullscreenchange',       onFsChange)
-    document.addEventListener('webkitfullscreenchange', onFsChange)
-    document.addEventListener('mozfullscreenchange',    onFsChange)
-    return () => {
-      document.removeEventListener('fullscreenchange',       onFsChange)
-      document.removeEventListener('webkitfullscreenchange', onFsChange)
-      document.removeEventListener('mozfullscreenchange',    onFsChange)
-    }
-  }, [resumeMusic])
-
-  // Відкрити на весь екран + зупинити музику
-  const enterFullscreen = async (element) => {
-    try {
-      if (element.requestFullscreen)            await element.requestFullscreen()
-      else if (element.webkitRequestFullscreen) await element.webkitRequestFullscreen()
-      else if (element.mozRequestFullScreen)    await element.mozRequestFullScreen()
-    } catch (err) {
-      // На деяких iOS браузерах requestFullscreen недоступний —
-      // відео все одно відтвориться звичайно
-      console.warn('Fullscreen недоступний:', err)
-    }
-  }
-
-  const handlePlay = async () => {
-    const video = videoRef.current
-    if (!video) return
-
-    // Запам'ятовуємо стан музики
+  const handleOpen = () => {
     musicWasPlaying.current = musicPlaying
-    // Вимикаємо музику
     if (musicPlaying) pauseMusic()
-
-    // Відкриваємо відео на весь екран
-    // На мобільному iOS — відкриваємо сам відео-елемент
-    // На десктопі — обгортку (для кастомних контролів)
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-    const fsTarget = isMobile ? video : (wrapperRef.current ?? video)
-
-    await enterFullscreen(fsTarget)
-
-    // Запускаємо відео
-    video.play().catch(() => {})
-    setIsPlaying(true)
+    setIsOpen(true)
+    // Блокуємо скрол сторінки
+    document.body.style.overflow = 'hidden'
   }
 
-  const handlePause = () => {
-    videoRef.current?.pause()
-    setIsPlaying(false)
+  const handleClose = () => {
+    setIsOpen(false)
+    document.body.style.overflow = ''
     if (musicWasPlaying.current) resumeMusic()
   }
 
-  const handleEnded = () => {
-    setIsPlaying(false)
-    // Виходимо з повноекранного режиму
-    if (document.exitFullscreen)            document.exitFullscreen()
-    else if (document.webkitExitFullscreen) document.webkitExitFullscreen()
-    // Відновлюємо музику
-    if (musicWasPlaying.current) resumeMusic()
-  }
+  // Закрити по Escape
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') handleClose() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   return (
-    <div className="max-w-lg mx-auto mb-12">
-      <div
-        ref={wrapperRef}
-        className="relative rounded-3xl overflow-hidden shadow-2xl
-          shadow-rose-300 dark:shadow-rose-900
-          bg-gradient-to-br from-rose-200 to-fuchsia-200
-          dark:from-rose-800 dark:to-fuchsia-800"
-      >
-        {hasVideo ? (
-          <>
-            <video
-              ref={videoRef}
-              src="/video/greeting.mp4"
-              className="w-full aspect-video object-cover"
-              playsInline          // важливо для iOS — не автоповноекран при завантаженні
-              preload="metadata"   // завантажуємо тільки метадані одразу
-              onEnded={handleEnded}
-              onError={() => setHasVideo(false)}
-            />
-
-            {/* Overlay — кнопка Play поверх відео */}
-            <AnimatePresence>
-              {!isPlaying && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onClick={handlePlay}
-                  className="absolute inset-0 flex flex-col items-center
-                    justify-center cursor-pointer gap-3 group
-                    bg-black/20 hover:bg-black/30 transition-colors"
-                >
-                  {/* Кнопка */}
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-white/30 backdrop-blur-sm rounded-full p-5
-                      group-hover:bg-white/40 transition-colors shadow-xl"
-                  >
-                    <FaPlay className="text-white text-3xl ml-1" />
-                  </motion.div>
-
-                  {/* Підказки під кнопкою */}
-                  <div className="text-center">
-                    <p className="text-white font-semibold text-sm drop-shadow">
-                      Тицькай сюди)
-                    </p>
-                    <p className="text-white/70 text-xs mt-0.5 drop-shadow">
-                      🎬 Відкриється на весь екран
-                      {musicPlaying && ' · 🎵 Музика призупиниться'}
-                    </p>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Кнопка паузи (видима тільки під час відтворення, не в fullscreen) */}
-            <AnimatePresence>
-              {isPlaying && !isFullscreen && (
-                <motion.button
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onClick={handlePause}
-                  className="absolute bottom-3 right-3 bg-black/50
-                    backdrop-blur-sm text-white rounded-full p-2.5
-                    cursor-pointer hover:bg-black/70 transition-colors"
-                >
-                  <FaPause className="text-sm" />
-                </motion.button>
-              )}
-            </AnimatePresence>
-          </>
-        ) : (
-          // Заглушка якщо відео відсутнє
-          <div className="aspect-video flex flex-col items-center
-            justify-center gap-3 text-white/80 p-6"
+    <>
+      {/* ── КАРТКА-ПОСТЕР ── */}
+      <div className="max-w-lg mx-auto mb-12">
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={handleOpen}
+          className="relative cursor-pointer rounded-3xl overflow-hidden
+            shadow-2xl shadow-rose-300 dark:shadow-rose-900 group"
+        >
+          {/* Градієнтний постер */}
+          <div className="w-full aspect-video bg-gradient-to-br
+            from-rose-400 via-fuchsia-500 to-violet-600
+            flex items-center justify-center relative overflow-hidden"
           >
-            <span className="text-6xl">🎬</span>
-            <p className="font-medium text-center text-sm">
-              Поклади відео у{' '}
-              <code className="bg-white/20 px-2 py-0.5 rounded">
-                public/video/greeting.mp4
-              </code>
-            </p>
+            {/* Декоративні кола на фоні */}
+            <div className="absolute w-64 h-64 bg-white/10 rounded-full
+              -top-16 -left-16 blur-2xl" />
+            <div className="absolute w-48 h-48 bg-white/10 rounded-full
+              -bottom-12 -right-12 blur-2xl" />
+
+            {/* Емодзі та текст */}
+            <div className="relative text-center text-white z-10 px-6">
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-6xl mb-3"
+              >
+                🎬
+              </motion.div>
+              <p className="font-bold text-xl mb-1">Відео-привітання</p>
+              <p className="text-white/70 text-sm">спеціально для тебе</p>
+            </div>
+
+            {/* Кнопка Play по центру */}
+            <motion.div
+              animate={{ scale: [1, 1.08, 1] }}
+              transition={{ duration: 1.8, repeat: Infinity }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <div className="w-20 h-20 rounded-full bg-white/20
+                backdrop-blur-sm border-2 border-white/50
+                flex items-center justify-center
+                group-hover:bg-white/30 group-hover:scale-110
+                transition-all duration-300 shadow-2xl"
+              >
+                <FaPlay className="text-white text-3xl ml-1.5" />
+              </div>
+            </motion.div>
+
+            {/* Overlay при hover */}
+            <div className="absolute inset-0 bg-black/0
+              group-hover:bg-black/10 transition-colors duration-300" />
           </div>
-        )}
+
+          {/* Підпис під постером */}
+          <div className="bg-white dark:bg-rose-950 px-5 py-3
+            flex items-center justify-between"
+          >
+            <div className="flex items-center gap-2">
+              <FaHeart className="text-rose-500 text-sm animate-pulse" />
+              <span className="text-rose-600 dark:text-rose-300
+                text-sm font-medium"
+              >
+                Натисни, щоб переглянути 💕
+              </span>
+            </div>
+            <span className="text-rose-400 text-xs">▶ Відтворити</span>
+          </div>
+        </motion.div>
       </div>
 
-      <p className="text-center text-rose-400 dark:text-rose-500 text-sm mt-3">
-        🎬 Відео-привітання спеціально для тебе
-      </p>
-    </div>
+      {/* ── МОДАЛЬНЕ ВІКНО З IFRAME ── */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[200] bg-black/95
+              flex flex-col items-center justify-center p-4"
+          >
+            {/* Кнопка закрити */}
+            <motion.button
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              onClick={handleClose}
+              className="absolute top-4 right-4 bg-white/10
+                hover:bg-white/20 text-white rounded-full p-3
+                transition-colors cursor-pointer z-10
+                flex items-center gap-2 text-sm font-medium"
+            >
+              <FaTimes />
+              Закрити
+            </motion.button>
+
+            {/* Заголовок */}
+            <motion.p
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="text-white/60 text-sm mb-4"
+            >
+              🎬 Відео-привітання
+            </motion.p>
+
+            {/* iframe — займає весь екран */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+              className="w-full max-w-4xl rounded-2xl overflow-hidden
+                shadow-2xl bg-black"
+              style={{ aspectRatio: '16/9' }}
+            >
+              <iframe
+                src={`https://drive.google.com/file/d/${DRIVE_FILE_ID}/preview`}
+                className="w-full h-full"
+                allow="autoplay; fullscreen"
+                allowFullScreen
+                title="Відео привітання"
+              />
+            </motion.div>
+
+            {/* Підказка */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-white/40 text-xs mt-4"
+            >
+              Натисни Escape або кнопку, щоб закрити
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
 

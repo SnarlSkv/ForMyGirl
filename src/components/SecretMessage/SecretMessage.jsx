@@ -130,46 +130,48 @@ export default function SecretMessage() {
 
           {/* ── СТАН: ЗАМКНЕНО ── */}
           {!isUnlocked && (
-            <motion.div
-              key="locked"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.4 }}
-              className="text-center"
-            >
-              {/* Конверт */}
-              <div className="relative inline-block mb-8">
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="text-[120px] md:text-[160px] select-none leading-none filter drop-shadow-2xl"
-                >
-                  💕💕💕
-                </motion.div>
-                {/* Пульсуюче коло */}
-                <div className="absolute inset-0 rounded-full bg-rose-300 dark:bg-rose-600 blur-3xl opacity-20 animate-pulse" />
-              </div>
+  <motion.div
+    key="locked"
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.9 }}
+    transition={{ duration: 0.4 }}
+    className="text-center pt-8"
+  >
+    {/* Конверт — прибрали blur-коло, зменшили розмір на мобільному */}
+    <motion.div
+      animate={{ y: [0, -8, 0] }}
+      transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+      className="text-[64px] md:text-[100px] select-none leading-none
+        filter drop-shadow-lg mb-6 inline-block"
+    >
+      💕
+    </motion.div>
 
-              <p className="text-rose-600 dark:text-rose-300 text-lg mb-2 font-medium">
-                
-              </p>
-              <p className="text-rose-400 dark:text-rose-500 text-sm mb-8">
-                
-              </p>
+    <p className="text-rose-600 dark:text-rose-300 text-lg mb-2 font-medium">
+      Тут є щось важливе для тебе...
+    </p>
+    <p className="text-rose-400 dark:text-rose-500 text-sm mb-8">
+      Натисни, щоб продовжити 🔐
+    </p>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={unlock}
-                className="group inline-flex items-center gap-3 bg-gradient-to-r from-fuchsia-500 to-rose-500 hover:from-fuchsia-600 hover:to-rose-600 text-white font-bold text-lg px-10 py-4 rounded-full shadow-xl shadow-fuchsia-200 dark:shadow-fuchsia-900 transition-all cursor-pointer"
-              >
-                <FaLock className="group-hover:rotate-12 transition-transform" />
-                Продовжуємо?))))
-                <FaEnvelopeOpenText className="group-hover:scale-110 transition-transform" />
-              </motion.button>
-            </motion.div>
-          )}
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={unlock}
+      className="group inline-flex items-center gap-3
+        bg-gradient-to-r from-fuchsia-500 to-rose-500
+        hover:from-fuchsia-600 hover:to-rose-600
+        text-white font-bold text-lg px-10 py-4 rounded-full
+        shadow-xl shadow-fuchsia-200 dark:shadow-fuchsia-900
+        transition-all cursor-pointer"
+    >
+      <FaLock className="group-hover:rotate-12 transition-transform" />
+      Продовжуємо?))))
+      <FaEnvelopeOpenText className="group-hover:scale-110 transition-transform" />
+    </motion.button>
+  </motion.div>
+)}
 
           {/* ── СТАН: ВІДКРИТО / ДРУКУЄТЬСЯ ── */}
           {isUnlocked && (

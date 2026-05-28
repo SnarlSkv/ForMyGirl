@@ -26,12 +26,16 @@ function VideoGreeting() {
   const musicWasPlaying = useRef(false)
 
   const handleOpen = () => {
-    musicWasPlaying.current = musicPlaying
-    if (musicPlaying) pauseMusic()
-    setIsOpen(true)
-    // Блокуємо скрол сторінки
-    document.body.style.overflow = 'hidden'
-  }
+  musicWasPlaying.current = musicPlaying
+  if (musicPlaying) pauseMusic()
+
+  // Фікс висоти для iOS Safari
+  const vh = window.innerHeight * 0.01
+  document.documentElement.style.setProperty('--vh', `${vh}px`)
+
+  setIsOpen(true)
+  document.body.style.overflow = 'hidden'
+}
 
   const handleClose = () => {
     setIsOpen(false)
@@ -120,72 +124,54 @@ function VideoGreeting() {
       </div>
 
       {/* ── МОДАЛЬНЕ ВІКНО З IFRAME ── */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[200] bg-black/95
-              flex flex-col items-center justify-center p-4"
-          >
-            {/* Кнопка закрити */}
-            <motion.button
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              onClick={handleClose}
-              className="absolute top-4 right-4 bg-white/10
-                hover:bg-white/20 text-white rounded-full p-3
-                transition-colors cursor-pointer z-10
-                flex items-center gap-2 text-sm font-medium"
-            >
-              <FaTimes />
-              Закрити
-            </motion.button>
+<AnimatePresence>
+  {isOpen && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      className="fixed inset-0 bg-black flex items-center justify-center"
+      style={{ zIndex: 9999 }}
+    >
+      {/* Кнопка закрити */}
+      <button
+        onClick={handleClose}
+        className="absolute top-4 right-4 bg-white/15 hover:bg-white/25
+          text-white rounded-full px-4 py-2 border border-white/20
+          flex items-center gap-2 text-sm font-medium cursor-pointer
+          transition-colors"
+        style={{ zIndex: 10000 }}
+      >
+        <FaTimes />
+        Закрити
+      </button>
 
-            {/* Заголовок */}
-            <motion.p
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-              className="text-white/60 text-sm mb-4"
-            >
-              🎬 Відео-привітання
-            </motion.p>
-
-            {/* iframe — займає весь екран */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-              className="w-full max-w-4xl rounded-2xl overflow-hidden
-                shadow-2xl bg-black"
-              style={{ aspectRatio: '16/9' }}
-            >
-              <iframe
-                src={`https://drive.google.com/file/d/${DRIVE_FILE_ID}/preview`}
-                className="w-full h-full"
-                allow="autoplay; fullscreen"
-                allowFullScreen
-                title="Відео привітання"
-              />
-            </motion.div>
-
-            {/* Підказка */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="text-white/40 text-xs mt-4"
-            >
-              Натисни Escape або кнопку, щоб закрити
-            </motion.p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* 
+        Магічна формула розміру:
+        - Ширина  = min(100vw, 100vh × 16/9)
+        - Висота  = min(100vh, 100vw × 9/16)
+        Відео займає максимум місця в будь-якій орієнтації без чорних смуг збоку
+      */}
+      <div
+        style={{
+          width:  'min(100vw, calc(var(--vh, 1vh) * 100 * 16 / 9))',
+          height: 'min(calc(var(--vh, 1vh) * 100), calc(100vw * 9 / 16))',
+        }}
+        className="flex-shrink-0"
+      >
+        <iframe
+          src={`https://drive.google.com/file/d/${DRIVE_FILE_ID}/preview`}
+          className="w-full h-full"
+          allow="autoplay; fullscreen"
+          allowFullScreen
+          title="Відео привітання"
+          style={{ display: 'block', border: 'none' }}
+        />
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
     </>
   )
 }
@@ -253,7 +239,7 @@ export default function Finale() {
     <section
       ref={sectionRef}
       id="finale"
-      className="py-20 px-4 bg-gradient-to-b from-pink-50 via-rose-50 to-fuchsia-100 dark:from-pink-950 dark:via-rose-950 dark:to-fuchsia-900 relative overflow-hidden min-h-screen flex flex-col justify-center"
+      className="py-20 px-4 bg-gradient-to-b from-pink-50 via-rose-50 to-fuchsia-100 dark:from-pink-950 dark:via-rose-950 dark:to-fuchsia-900 relative min-h-screen flex flex-col justify-center"
     >
       {/* Конфеті */}
       {showConfetti && (

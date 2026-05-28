@@ -145,16 +145,9 @@ export default function SecretMessage() {
       className="text-[64px] md:text-[100px] select-none leading-none
         filter drop-shadow-lg mb-6 inline-block"
     >
-      💕
+      💕💕💕
     </motion.div>
-
-    <p className="text-rose-600 dark:text-rose-300 text-lg mb-2 font-medium">
-      Тут є щось важливе для тебе...
-    </p>
-    <p className="text-rose-400 dark:text-rose-500 text-sm mb-8">
-      Натисни, щоб продовжити 🔐
-    </p>
-
+    
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}

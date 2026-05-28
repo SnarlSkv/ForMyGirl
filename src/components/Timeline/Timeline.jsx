@@ -1,7 +1,17 @@
 // src/components/Timeline/Timeline.jsx
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { FaHeart, FaCamera, FaStar, FaMusic, FaCoffee, FaMap } from 'react-icons/fa'
+import {
+FaHeart,
+FaCamera,
+FaGift,
+FaGamepad,
+FaUtensils,
+FaMapMarkedAlt,
+FaMoon,
+FaMusic,
+FaStar
+} from 'react-icons/fa'
 
 // ─── ДАНІ ───────────────────────────────────────────────────────────────────
 // Заміни тексти, дати та іконки на свої спогади
@@ -35,7 +45,7 @@ const MEMORIES = [
   {
     id: 2,    
     date: 'Перша зустріч',
-    icon: FaMap,
+    icon: FaMapMarkedAlt,
     color: 'from-fuchsia-400 to-purple-500',
     bg: 'bg-fuchsia-50 dark:bg-fuchsia-900/30',
     border: 'border-fuchsia-200 dark:border-fuchsia-700',
@@ -47,7 +57,7 @@ const MEMORIES = [
   {
     id: 3,
     date: 'День коли ти приїхала в Полтаву',
-    icon: FaCoffee,
+    icon: FaHeart,
     color: 'from-amber-400 to-rose-400',
     bg: 'bg-amber-50 dark:bg-amber-900/20',
     border: 'border-amber-200 dark:border-amber-700',
@@ -71,7 +81,7 @@ const MEMORIES = [
   {
     id: 5,
     date: 'Новий рік',
-    icon: FaHeart,
+    icon: FaGift,
     color: 'from-rose-500 to-red-500',
     bg: 'bg-rose-50 dark:bg-rose-900/30',
     border: 'border-rose-200 dark:border-rose-700',
@@ -83,7 +93,7 @@ const MEMORIES = [
   {
     id: 6,
     date: 'Ігри разом',
-    icon: FaHeart,
+    icon: FaGamepad,
     color: 'from-rose-500 to-red-500',
     bg: 'bg-rose-50 dark:bg-rose-900/30',
     border: 'border-rose-200 dark:border-rose-700',
@@ -95,7 +105,7 @@ const MEMORIES = [
   {
     id: 7,
     date: 'Ооо, а це, що за смакота?)',
-    icon: FaStar,
+    icon: FaUtensils,
     color: 'from-rose-400 to-pink-500',
     bg: 'bg-rose-50 dark:bg-rose-900/30',
     border: 'border-rose-200 dark:border-rose-700',
@@ -107,7 +117,7 @@ const MEMORIES = [
   {
     id: 8,    
     date: 'Одна з найприкольніших ночей',
-    icon: FaMap,
+    icon: FaMoon,
     color: 'from-fuchsia-400 to-purple-500',
     bg: 'bg-fuchsia-50 dark:bg-fuchsia-900/30',
     border: 'border-fuchsia-200 dark:border-fuchsia-700',
@@ -119,7 +129,7 @@ const MEMORIES = [
   {
     id: 9,
     date: '8 чудо світу - це ти ❤️',
-    icon: FaMusic,
+    icon: FaHeart,
     color: 'from-violet-400 to-fuchsia-500',
     bg: 'bg-violet-50 dark:bg-violet-900/20',
     border: 'border-violet-200 dark:border-violet-700',
@@ -131,7 +141,7 @@ const MEMORIES = [
   {
     id: 10,
     date: 'І ось сьогодні — твій день народження! 🎂',
-    icon: FaHeart,
+    icon: FaGift,
     color: 'from-rose-500 to-red-500',
     bg: 'bg-rose-50 dark:bg-rose-900/30',
     border: 'border-rose-200 dark:border-rose-700',

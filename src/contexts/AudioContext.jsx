@@ -11,7 +11,7 @@ export function AudioProvider({ children }) {
   useEffect(() => {
     const audio = new Audio('/music/background.mp3')
     audio.loop   = true
-    audio.volume = 0.3
+    audio.volume = 0.05
     audio.addEventListener('canplaythrough', () => setIsReady(true))
     audioRef.current = audio
     return () => { audio.pause(); audio.src = '' }

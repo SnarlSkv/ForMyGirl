@@ -22,18 +22,18 @@ import photo11 from '../../assets/photos/27.jpg'
 
 const PHOTOS = [
   { id: 1, url: photo1, color: 'from-rose-300 to-pink-400',    caption: 'Хочу постійно отримувати такий подаруночок на Новий Рік 😄❤️',   span: 'col-span-2 row-span-2' },
-  { id: 2, url: photo2, color: 'from-fuchsia-300 to-violet-400', caption: 'Коли сказали, що є запіканочка',     span: '' },
-  { id: 3, url: photo3, color: 'from-amber-300 to-rose-300',   caption: 'Як я дивлюся на тебе коли ти вийшла з душику',       span: '' },
-  { id: 4, url: photo3, color: 'from-violet-300 to-fuchsia-400', caption: 'Як я дивлюся на тебе постійно',    span: '' },
-  { id: 5, url: photo4, color: 'from-pink-300 to-rose-400',    caption: 'Що бачить останній желейний ведмедик перед тим як його поділять навпіл',            span: '' },
+  { id: 2, url: photo2, color: 'from-fuchsia-300 to-violet-400', caption: 'Коли сказали, що є запіканочка:',     span: '' },
+  { id: 3, url: photo3, color: 'from-amber-300 to-rose-300',   caption: 'Як я дивлюся на тебе, коли ти вийшла з душика 😏',       span: '' },
+  { id: 4, url: photo3, color: 'from-violet-300 to-fuchsia-400', caption: 'Й як я дивлюся на тебе постійно 😋',    span: '' },
+  { id: 5, url: photo4, color: 'from-pink-300 to-rose-400',    caption: 'Що бачить останній желейний ведмедик перед тим, як його поділять навпіл 🫣',            span: '' },
   { id: 6, url: photo5, color: 'from-rose-400 to-fuchsia-400', caption: 'КЧААУУУ',   span: '' },
-  { id: 7, url: photo6, color: 'from-sky-300 to-violet-400',   caption: 'Сарделька',        span: '' },
+  { id: 7, url: photo6, color: 'from-sky-300 to-violet-400',   caption: 'Це просто - Сарделька',        span: '' },
   { id: 8, url: photo7, color: 'from-emerald-300 to-rose-300', caption: 'Дві сардельки',       span: '' },
-  { id: 9, url: photo8, color: 'from-emerald-300 to-rose-300', caption: 'Це так між іншим, просто случив за тобою )',       span: '' },
-  { id: 10, url: photo9, color: 'from-emerald-300 to-rose-300', caption: '',       span: '' },
-  { id: 11, url: photo10, color: 'from-emerald-300 to-rose-300', caption: 'Я не сплю.......',       span: '' },
-  { id: 12, url: photo11, color: 'from-emerald-300 to-rose-300', caption: 'крута фотка',       span: '' },
-  { id: 14, url: photo2, color: 'from-emerald-300 to-rose-300', caption: 'Ну все, тепер пішли до основного привітання',       span: '' },
+  { id: 9, url: photo8, color: 'from-emerald-300 to-rose-300', caption: 'Це так між іншим, просто скучив за тобою 😛😜🤪❤️',       span: '' },
+  { id: 10, url: photo9, color: 'from-emerald-300 to-rose-300', caption: 'Коли спитали якого розміру.. кіндер) ти хочеш 👻',       span: '' },
+  { id: 11, url: photo10, color: 'from-emerald-300 to-rose-300', caption: 'Я не сплю.. я просто приліг 😴😁',       span: '' },
+  { id: 12, url: photo11, color: 'from-emerald-300 to-rose-300', caption: 'Просто крута фотка 😎',       span: '' },
+  { id: 14, url: photo2, color: 'from-emerald-300 to-rose-300', caption: 'Сподіваюсь, я зміг тебе усміхнути ☺️ Тепер пішли до основного привітання 💫',       span: '' },
   
   ]
 
@@ -123,7 +123,7 @@ function Lightbox({ photos, currentIndex, onClose, onPrev, onNext }) {
                 <img
                   src={photo.url}
                   alt={photo.caption}
-                  className="w-full h-full object-contain bg-black/10"
+                  className="w-full h-full object-cover"
                 />
               )
               : (

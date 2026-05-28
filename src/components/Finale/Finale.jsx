@@ -8,11 +8,13 @@ import { FaHeart, FaRedo, FaPlay, FaPause, FaStar } from 'react-icons/fa'
 // ─── ФІНАЛЬНИЙ ТЕКСТ ──────────────────────────────────────────────────────────
 // Зміни на свій
 const FINAL_WORDS = [
-  { emoji: '🌟', text: 'Ти моя зірка' },
-  { emoji: '🌸', text: 'Ти моя весна' },
-  { emoji: '☀️', text: 'Ти моє сонце' },
-  { emoji: '🏠', text: 'Ти мій дім' },
-  { emoji: '❤️', text: 'Ти моє все' },
+  { emoji: '☀️', text: 'Ти моє сонечко' },
+  { emoji: '💯', text: 'Ти вся тисяча з ста' },
+  { emoji: '🍫', text: 'Ти солодша за найбажаніший шоколад' },
+  { emoji: '🥰', text: 'Ти неймовірна' },
+  { emoji: '❤️', text: 'Ти — моє все' },
+  { emoji: '🥳', text: 'Й ти заслуговуєш на все 😘' },
+  
 ]
 
 // ─── ВІДЕО-ПРИВІТАННЯ ─────────────────────────────────────────────────────────
@@ -155,7 +157,7 @@ function VideoGreeting() {
                   {/* Підказки під кнопкою */}
                   <div className="text-center">
                     <p className="text-white font-semibold text-sm drop-shadow">
-                      Переглянути відео-привітання
+                      Тицькай сюди)
                     </p>
                     <p className="text-white/70 text-xs mt-0.5 drop-shadow">
                       🎬 Відкриється на весь екран

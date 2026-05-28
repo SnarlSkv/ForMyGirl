@@ -1,5 +1,5 @@
 // src/components/FloatingHearts/FloatingHearts.jsx
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // Всі можливі символи-серця
@@ -24,24 +24,16 @@ export default function FloatingHearts() {
     // Створюємо 12 сердець одразу при монтуванні
     Array.from({ length: 12 }, (_, i) => createHeart(i))
   )
-  const [nextId, setNextId] = useState(12)
+  const nextId = useRef(12)
 
-  useEffect(() => {
-    // Кожні 2.5 секунди додаємо нове серце
-    const interval = setInterval(() => {
-      setNextId(prev => {
-        const id = prev + 1
-        setHearts(h => {
-          // Тримаємо максимум 18 сердець, щоб не перевантажувати
-          const updated = [...h.slice(-17), createHeart(id)]
-          return updated
-        })
-        return id
-      })
-    }, 2500)
-
-    return () => clearInterval(interval)
-  }, [])
+useEffect(() => {
+  const interval = setInterval(() => {
+    nextId.current += 1
+    const id = nextId.current
+    setHearts(h => [...h.slice(-17), createHeart(id)])
+  }, 2500)
+  return () => clearInterval(interval)
+}, [])
 
   return (
     // pointer-events-none — серця не перехоплюють кліки
